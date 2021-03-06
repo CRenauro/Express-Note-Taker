@@ -1,12 +1,12 @@
 // import items needed
 const router = require('express').Router();
 const store = require('../db/store')
+const fetch = require("node-fetch");
 
 // make a GET request with all notes from the database
 
 router.get('/notes', (req, res) => {
-    store
-    .getNotes()
+  fetch
     .then((notes) => {
         return res.json(notes);
     })
