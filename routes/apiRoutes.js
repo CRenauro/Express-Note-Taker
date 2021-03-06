@@ -13,9 +13,9 @@ router.get('/notes', (req, res) => {
     .catch((err) => res.status(500).json(err));
 })
 
-// create a post request // IS THIS CORRECT?
+// create a post request 
 router.post('/notes', (req, res) => {
-    fetch
+  fetch
     .then((notes) => {
       return res.json(notes);
     })
@@ -24,7 +24,13 @@ router.post('/notes', (req, res) => {
 
 
 // create a delete request
-//router.delete()
+router.delete('/notes', (req, res) => {
+  fetch
+    .then((notes) => {
+      return res.json(notes);
+    })
+    .catch((err) => res.status(500).json(err));
+})
 
 
 
