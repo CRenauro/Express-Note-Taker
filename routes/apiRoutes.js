@@ -3,6 +3,7 @@ const router = require('express').Router();
 const store = require('../db/store');
 const fetch = require("node-fetch");
 const fs = require("fs");
+const { v4: uuidv4 } = require('uuid');
 
 // make a GET request with all notes from the database
 
@@ -16,19 +17,20 @@ router.get('/notes', (req, res) => {
   });
 });
 
-router.post('/api/notes', (req,res) => {
+router.post('/notes', (req,res) => {
+  var temp;
   fs.readFile('db/db.json', 'utf8', function(error,data) {
     var newNote = req.body;
     newNote.id = uuidv4();
-    var data = json.parse(data);
-      data.push(newNote);
-      fs.writeFile('db/db.json', json.stringify(data), function(error) {
+    temp = JSON.parse(data);
+      temp.push(newNote);
+      fs.writeFile('db/db.json', json.stringify(temp), function(error) {
           if (error)
           throw error;
           console.log("successful");
       })
     });
-    res.json(newNote);
+    res.json(temp);
   });
 
 router.delete('/api/notes/:id', function (req, res) {
