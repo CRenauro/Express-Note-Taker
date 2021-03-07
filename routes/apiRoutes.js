@@ -24,7 +24,7 @@ router.post('/notes', (req,res) => {
     newNote.id = uuidv4();
     temp = JSON.parse(data);
       temp.push(newNote);
-      fs.writeFile('db/db.json', json.stringify(temp), function(error) {
+      fs.writeFile('db/db.json', JSON.stringify(temp), function(error) {
           if (error)
           throw error;
           console.log("successful");
@@ -35,8 +35,8 @@ router.post('/notes', (req,res) => {
 
 router.delete('/api/notes/:id', function (req, res) {
   fs.readFile('db/db.json', 'utf8', function(error,data) {
-      var noteId = req.params.id;
-      var noteData = json.parse(data);
+      var newNoteId = req.params.id;
+      var noteData = JSON.parse(data);
       noteData = noteData.filter(function(store) {
           if (noteId != note.id) {
               return true;

@@ -1,6 +1,1 @@
-[
-    {
-        "title":"Test Title",
-        "text":"Test text"
-    }
- ]
+[{"title":"Test Title","text":"Test text"},{"title":"Grocery List","text":"milk\neggs\nbread","id":"0f78ca77-355c-48ad-88a5-eb1e4c23eb42"},{"title":"Wine","text":"Cabernet\nPinot Noir\n\n","id":"37db91d0-841b-4374-8816-51fa79ec4ad2"}]
