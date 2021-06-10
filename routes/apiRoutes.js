@@ -1,6 +1,6 @@
 // import items needed
-const router = require('express').Router();
-const store = require('../db/store');
+const app = require('express').Router();
+// const store = require('../db/store');
 const fetch = require("node-fetch");
 const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
@@ -11,13 +11,13 @@ const { v4: uuidv4 } = require('uuid');
 
 // };
 
-router.get('/notes', (req, res) => {
+app.get('/notes', (req, res) => {
   fs.readFile('db/db.json', 'utf8', function(error,data) {
     res.json(JSON.parse(data));
   });
 });
 
-router.post('/notes', (req,res) => {
+app.post('/notes', (req,res) => {
   var temp;
   fs.readFile('db/db.json', 'utf8', function(error,data) {
     var newNote = req.body;
@@ -31,42 +31,27 @@ router.post('/notes', (req,res) => {
       })
     });
     res.json(temp);
-  });
-
-router.delete('/api/notes/:id', function (req, res) {
-  fs.readFile('db/db.json', 'utf8', function(error,data) {
-      var newNoteId = req.params.id;
-      var noteData = JSON.parse(data);
-      noteData = noteData.filter(function(store) {
-          if (noteId != note.id) {
-              return true;
-          }  else {
-              return false;
-          };
-      });
-      fs.writeFile('db/db.json', json.stringify(noteData), function(error) {
-          if (error)
-          throw error;
-          res.end(console.log("deleted"));
-      })
-  });
 });
 
+function deleteNote(id, newNote) {
+    for (let i = 0; i < newNote.length; i++) {
+        let note = newNote[i];
 
-// // create a post request 
+        if (note.id == id) {
+            newNote.splice(i, 1);
+            fs.writeFileSync(
+                path.join(__dirname, './db/db.json'),
+                JSON.stringify(newNote, null, 2)
+            );
 
+            break;
+        }
+    }
+};
 
+app.delete('/api/notes/:id', (req, res) => {
+  deleteNote(req.params.id, allNotes);
+  res.json(true);
+});
 
-// // create a delete request
-// router.delete('/notes', (req, res) => {
-//   fetch
-//     .then((notes) => {
-//       return res.json(notes);
-//     })
-//     .catch((err) => res.status(500).json(err));
-// })
-
-
-
-
-module.exports = router;
+module.exports = app;

@@ -2,17 +2,17 @@
 // We need to include the path package to get the correct file path for our html
 
 const path = require('path');
-const router = require('express').Router();
+const app = require('express').Router();
 
 
 
 // ROUTING
 
-router.get('/notes', (req, res) => {
+app.get('/notes', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/notes.html'));
 });
 
-router.get('*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
@@ -21,4 +21,4 @@ router.get('*', (req, res) => {
 
 
 
-module.exports = router;
+module.exports = app;
