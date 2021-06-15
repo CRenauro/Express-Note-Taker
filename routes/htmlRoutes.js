@@ -1,8 +1,9 @@
 // DEPENDENCIES
 // We need to include the path package to get the correct file path for our html
 
-const path = require('path');
-const app = require('express').Router();
+const express = require ("express");
+const path = require ("path");
+const fs = require ("fs");
 
 
 

@@ -17,6 +17,8 @@ app.get('/notes', (req, res) => {
   });
 });
 
+
+
 app.post('/notes', (req,res) => {
   var temp;
   fs.readFile('db/db.json', 'utf8', function(error,data) {
@@ -50,7 +52,7 @@ function deleteNote(id, newNote) {
 };
 
 app.delete('/api/notes/:id', (req, res) => {
-  deleteNote(req.params.id, allNotes);
+  deleteNote(req.params.id, newNote);
   res.json(true);
 });
 
