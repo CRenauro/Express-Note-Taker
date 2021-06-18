@@ -1,59 +1,57 @@
-// import items needed
-const app = require('express').Router();
-// const store = require('../db/store');
-const fetch = require("node-fetch");
+// // import items needed
+
 const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
 
-// make a GET request with all notes from the database
+module.exports = function(app) {
+  // API GET Requests
 
-// module.exports = function(router){
-
-// };
-
-app.get('/notes', (req, res) => {
-  fs.readFile('db/db.json', 'utf8', function(error,data) {
-    res.json(JSON.parse(data));
+   // /api/notes reads the json file and returns all saved notes as JSON
+  app.get('/api/notes', function (req, res) {
+    fs.readFile("db/db.json", "utf8", function(error,data) {
+      res.json(JSON.parse(data));
+    });
+    
   });
-});
 
+  // API POST Requests
 
+  // Receives a new note to save, adds it to the json file, and then returns the new note in the browser
 
-app.post('/notes', (req,res) => {
-  var temp;
-  fs.readFile('db/db.json', 'utf8', function(error,data) {
+    app.post("/api/notes", function(req, res) {
     var newNote = req.body;
     newNote.id = uuidv4();
-    temp = JSON.parse(data);
-      temp.push(newNote);
-      fs.writeFile('db/db.json', JSON.stringify(temp), function(error) {
+      fs.readFile("db/db.json", "utf8", function(error,data) {
+        var data = JSON.parse(data);
+        data.push(newNote);
+        fs.writeFile("db/db.json", JSON.stringify(data), function(error){
+          if (error)
+           throw error;
+           console.log("Written Successfully");
+        })
+      });
+      res.json(newNote);
+
+    });
+
+    app.delete("/api/notes/:id", function(req, res) {
+      fs.readFile("db/db.json", "utf8", function(error, data) {
+        let noteId = req.params.id;
+        let noteData = JSON.parse(data);
+        noteData = noteData.filter(function(note) {
+            if (noteId != note.id) {
+              return true;
+            } else {
+              return false;
+            };
+        }); 
+        fs.writeFile("db/db.json", JSON.stringify(noteData), function(error){
           if (error)
           throw error;
-          console.log("successful");
-      })
+          res.end(console.log("Deleted Successfully"));
+        })
+      });
+
     });
-    res.json(temp);
-});
 
-function deleteNote(id, newNote) {
-    for (let i = 0; i < newNote.length; i++) {
-        let note = newNote[i];
-
-        if (note.id == id) {
-            newNote.splice(i, 1);
-            fs.writeFileSync(
-                path.join(__dirname, './db/db.json'),
-                JSON.stringify(newNote, null, 2)
-            );
-
-            break;
-        }
-    }
 };
-
-app.delete('/api/notes/:id', (req, res) => {
-  deleteNote(req.params.id, newNote);
-  res.json(true);
-});
-
-module.exports = app;
